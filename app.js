@@ -2,6 +2,12 @@ const express = require("express");
 
 const app = express();
 
+// request payload middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use("/api/v1/product", require("./routes/productRoutes"));
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   const err = new Error("Not Found");
