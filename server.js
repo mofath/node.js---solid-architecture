@@ -1,10 +1,10 @@
-var app = require("./app");
-var http = require("http");
-
+const http = require("http");
 const dotEnv = require("dotenv");
+const app = require("./app");
+const DBManager = require("./database/DBManager");
 
 dotEnv.config();
- 
+
 /**
  * Get port from environment and store in Express.
  */
@@ -13,7 +13,16 @@ const PORT = process.env.PORT || 3000;
 app.set("port", PORT);
 
 const server = http.createServer(app);
-server.listen(PORT);
+
+const db = new DBManager().CONNECT();
+db.once("open", (err) => {
+  if (err) console.log("Database connection failure");
+  else {
+    console.log("Database connection is opened");
+    server.listen(PORT);
+  }
+});
+
 server.on("error", onError);
 server.on("listening", onListening);
 
@@ -26,7 +35,8 @@ function onError(error) {
     throw error;
   }
 
-  var bind = typeof port === "string" ? "Pipe " + port : "Port " + port;
+  const bind = typeof PORT === "string" ? "Pipe " + PORT : "Port " + PORT;
+  console.log(bind);
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
@@ -48,7 +58,7 @@ function onError(error) {
  */
 
 function onListening() {
-  var addr = server.address();
-  var bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
+  const addr = server.address();
+  const bind = typeof addr === "string" ? "pipe " + addr : "port " + addr.port;
   console.log("Listening on " + bind);
 }
