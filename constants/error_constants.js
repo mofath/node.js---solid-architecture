@@ -1,4 +1,4 @@
-module.exports.HttpStatus = {
+const HttpStatus = {
   CONTINUE: 100,
   SWITCHING_PROTOCOLS: 101,
   OK: 200,
@@ -61,7 +61,7 @@ module.exports.HttpStatus = {
   NETWORK_AUTHENTICATION_REQUIRED: 511,
 };
 
-module.exports.STATUS_MAP_MESSAGE = {
+const STATUS_MAP_MESSAGE = {
   [HttpStatus.CONTINUE]: "Continue",
   [HttpStatus.SWITCHING_PROTOCOLS]: "Switching Protocols",
   [HttpStatus.OK]: "OK",
@@ -125,4 +125,9 @@ module.exports.STATUS_MAP_MESSAGE = {
   [HttpStatus.NOT_EXTENDED]: "Not Extended",
   [HttpStatus.NETWORK_AUTHENTICATION_REQUIRED]:
     "Network Authentication Required",
+};
+
+module.exports = {
+  HttpStatus,
+  STATUS_MAP_MESSAGE,
 };

@@ -1,4 +1,5 @@
 const express = require("express");
+const { NotFoundError } = require("./lib/ErrorHandler");
 
 const app = express();
 
@@ -10,21 +11,23 @@ app.use("/api/v1/product", require("./routes/productRoutes"));
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-  const err = new Error("Not Found");
-  err.status = 404;
-  next(err);
+  next(new NotFoundError());
 });
 
-// error handlers
+/**
+ *  error handlers
+ */
 
 // development error handler
 // will print stacktrace
 if (app.get("env") === "development") {
   app.use(function (err, req, res, next) {
+    console.log(err);
     res.status(err.status || 500);
-    res.render("error", {
+    return res.json({
       message: err.message,
-      error: err,
+      stack: err.stack,
+      success: false,
     });
   });
 }
@@ -33,9 +36,10 @@ if (app.get("env") === "development") {
 // no stacktraces leaked to user
 app.use(function (err, req, res, next) {
   res.status(err.status || 500);
-  res.render("error", {
+  return res.json({
     message: err.message,
-    error: {},
+    stack: {},
+    success: false,
   });
 });
 
