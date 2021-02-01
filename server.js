@@ -1,7 +1,7 @@
 const http = require("http");
 const dotEnv = require("dotenv");
 const app = require("./app");
-const DBManager = require("./DBManager");
+const DBManager = require("./lib/DBManager");
 
 dotEnv.config();
 
