@@ -1,14 +1,25 @@
-var productService = require("../services/productServices");
+const productService = require("../services/productServices");
+const {
+  HttpStatus,
+  STATUS_MAP_MESSAGE,
+  productMessage,
+} = require("../constants");
+const { ServerError } = require("../lib/ErrorHandler");
 
-module.exports.createProduct = async (req, res) => {
-  let response = {};
+module.exports.createProduct = async (req, res, next) => {
   try {
     await productService.createProduct(req.body);
-    response.status = 200;
-    response.message = "created";
-  } catch (error) {
-    console.log("Something went wrong: Controller: createProduct", error);
-    response.message = error.message;
+    return res
+      .status(HttpStatus.CREATED)
+      .json({ message: productMessage.PRODUCT_CREATED, sucess: true });
+  } catch (err) {
+    console.log(err.message);
+    next(
+      new ServerError(
+        HttpStatus.INTERNAL_SERVER_ERROR,
+        STATUS_MAP_MESSAGE[HttpStatus.INTERNAL_SERVER_ERROR],
+        err.stack
+      )
+    );
   }
-  return res.status(response.status).send(response.message);
 };
