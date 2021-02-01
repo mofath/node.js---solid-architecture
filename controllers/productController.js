@@ -8,10 +8,12 @@ const { ServerError } = require("../lib/ErrorHandler");
 
 module.exports.createProduct = async (req, res, next) => {
   try {
-    await productService.createProduct(req.body);
-    return res
-      .status(HttpStatus.CREATED)
-      .json({ message: productMessage.PRODUCT_CREATED, sucess: true });
+    const result = await productService.createProduct(req.body);
+    return res.status(HttpStatus.CREATED).json({
+      message: productMessage.PRODUCT_CREATED,
+      product: result.toObject(),
+      sucess: true,
+    });
   } catch (err) {
     console.log(err.message);
     next(

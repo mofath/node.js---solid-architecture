@@ -7,7 +7,7 @@ module.exports.createProduct = async (serviceData) => {
       price: serviceData.price,
       brand: serviceData.brand,
     });
-    await product.save();
+    return await product.save();
   } catch (error) {
     console.log("Something went wrong: Service: createProduct", error);
     throw new Error(error);
