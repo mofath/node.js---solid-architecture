@@ -15,10 +15,12 @@ router.get(
   productController.getAllProducts
 );
 
+router.get("/:id", productController.getProductById);
 
-router.get(
+router.put(
   "/:id",
-  productController.getProductById
+  joiSchemaValidation.validateBody(productSchema.updateProductSchema),
+  productController.updateProduct
 );
 
 module.exports = router;

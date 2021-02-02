@@ -40,3 +40,19 @@ module.exports.getProductById = async ({ id }) => {
     throw new Error(error);
   }
 };
+
+module.exports.updateProduct = async ({ id, updateInfo }) => {
+  try {
+    checkObjectId(id);
+    const result = await ProductModel.findOneAndUpdate(
+      { _id: id },
+      updateInfo,
+      { new: true }
+    );
+    if (!result) throw new Error(productMessage.PRODUCT_NOT_FOUND);
+    return formatMongoData(result); 
+  } catch (error) {
+    console.log("Something went wrong: Service: updateProduct", error);
+    throw new Error(error);
+  }
+};
