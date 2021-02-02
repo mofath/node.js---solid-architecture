@@ -46,3 +46,24 @@ module.exports.getAllProducts = async (req, res, next) => {
   }
 };
 
+module.exports.getProductById = async (req, res, next) => {
+  try {
+    const result = await productService.getProductById(req.params);
+    return res.status(HttpStatus.OK).json({
+      message: productMessage.PRODUCT_FETCHED,
+      product: result,
+      sucess: true,
+    });
+  } catch (err) {
+    console.log(err.message);
+    next(
+      new ServerError(
+        HttpStatus.INTERNAL_SERVER_ERROR,
+        STATUS_MAP_MESSAGE[HttpStatus.INTERNAL_SERVER_ERROR],
+        err.stack
+      )
+    );
+  }
+};
+
+
