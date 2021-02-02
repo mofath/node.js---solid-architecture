@@ -16,9 +16,11 @@ module.exports.createProduct = async (serviceData) => {
   }
 };
 
-module.exports.getAllProducts = async () => {
+module.exports.getAllProducts = async ({ skip = 0, limit = 10 }) => {
   try {
-    const result = await ProductModel.find({});
+    const result = await ProductModel.find({})
+      .skip(parseInt(skip))
+      .limit(parseInt(limit));
     return formatMongoData(result);
   } catch (error) {
     console.log("Something went wrong: Service: getAllProducts", error);

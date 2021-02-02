@@ -28,7 +28,7 @@ module.exports.createProduct = async (req, res, next) => {
 
 module.exports.getAllProducts = async (req, res, next) => {
   try {
-    const result = await productService.getAllProducts();
+    const result = await productService.getAllProducts(req.query);
     return res.status(HttpStatus.OK).json({
       message: productMessage.PRODUCT_FETCHED,
       product: result,
