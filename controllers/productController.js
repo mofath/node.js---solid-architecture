@@ -88,3 +88,23 @@ module.exports.updateProduct = async (req, res, next) => {
     );
   }
 };
+
+module.exports.deleteProduct = async (req, res, next) => {
+  try {
+    const result = await productService.deleteProduct(req.params);
+    return res.status(HttpStatus.OK).json({
+      message: productMessage.PRODUCT_DELETED,
+      product: result,
+      sucess: true,
+    });
+  } catch (err) {
+    console.log(err.message);
+    next(
+      new ServerError(
+        HttpStatus.INTERNAL_SERVER_ERROR,
+        STATUS_MAP_MESSAGE[HttpStatus.INTERNAL_SERVER_ERROR],
+        err.stack
+      )
+    );
+  }
+};

@@ -50,9 +50,21 @@ module.exports.updateProduct = async ({ id, updateInfo }) => {
       { new: true }
     );
     if (!result) throw new Error(productMessage.PRODUCT_NOT_FOUND);
-    return formatMongoData(result); 
+    return formatMongoData(result);
   } catch (error) {
     console.log("Something went wrong: Service: updateProduct", error);
+    throw new Error(error);
+  }
+};
+
+module.exports.deleteProcuct = async ({ id }) => {
+  try {
+    checkObjectId(id);
+    const result = await ProductModel.findByIdAndDelete({ id });
+    if (!result) throw new Error(productMessage.PRODUCT_NOT_FOUND);
+    return formatMongoData(result);
+  } catch (error) {
+    console.log("Something went wrong: Service: deleteProcuct", error);
     throw new Error(error);
   }
 };
