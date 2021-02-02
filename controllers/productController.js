@@ -25,3 +25,24 @@ module.exports.createProduct = async (req, res, next) => {
     );
   }
 };
+
+module.exports.getAllProducts = async (req, res, next) => {
+  try {
+    const result = await productService.getAllProducts();
+    return res.status(HttpStatus.OK).json({
+      message: productMessage.PRODUCT_FETCHED,
+      product: result,
+      sucess: true,
+    });
+  } catch (err) {
+    console.log(err.message);
+    next(
+      new ServerError(
+        HttpStatus.INTERNAL_SERVER_ERROR,
+        STATUS_MAP_MESSAGE[HttpStatus.INTERNAL_SERVER_ERROR],
+        err.stack
+      )
+    );
+  }
+};
+

@@ -13,3 +13,13 @@ module.exports.createProduct = async (serviceData) => {
     throw new Error(error);
   }
 };
+
+module.exports.getAllProducts = async () => {
+  try {
+    let products = await ProductModel.find({});
+    return products;
+  } catch (error) {
+    console.log("Something went wrong: Service: getAllProducts", error);
+    throw new Error(error);
+  }
+};
