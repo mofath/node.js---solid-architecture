@@ -19,7 +19,22 @@ module.exports.validateBody = (schema) => {
   return (req, res, next) => {
     const error = validateObjectSchema(req.body, schema);
     if (error) {
-      console.log(error);
+      next(
+        new ServerError(
+          HttpStatus.BAD_REQUEST,
+          STATUS_MAP_MESSAGE[HttpStatus.BAD_REQUEST],
+          error
+        )
+      );
+    }
+    return next();
+  };
+};
+
+module.exports.validateQuerryParams = (schema) => {
+  return (req, res, next) => {
+    const error = validateObjectSchema(req.query, schema);
+    if (error) {
       next(
         new ServerError(
           HttpStatus.BAD_REQUEST,
