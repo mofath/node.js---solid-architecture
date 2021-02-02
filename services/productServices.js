@@ -1,13 +1,15 @@
-var ProductModel = require("../models/productModel");
+const ProductModel = require("../models/productModel");
+const { formatMongoData } = require("../helpers/dbHelper");
 
 module.exports.createProduct = async (serviceData) => {
   try {
-    let product = new ProductModel({
+    const product = new ProductModel({
       name: serviceData.name,
       price: serviceData.price,
       brand: serviceData.brand,
     });
-    return await product.save();
+    const result = await product.save();
+    return formatMongoData(result);
   } catch (error) {
     console.log("Something went wrong: Service: createProduct", error);
     throw new Error(error);
@@ -16,8 +18,8 @@ module.exports.createProduct = async (serviceData) => {
 
 module.exports.getAllProducts = async () => {
   try {
-    let products = await ProductModel.find({});
-    return products;
+    const result = await ProductModel.find({});
+    return formatMongoData(result);
   } catch (error) {
     console.log("Something went wrong: Service: getAllProducts", error);
     throw new Error(error);
