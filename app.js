@@ -1,5 +1,8 @@
 const express = require("express");
 const { NotFoundError } = require("./lib/ErrorHandler");
+const swaggerUI = require("swagger-ui-express");
+const YAML = require("yamljs");
+const swaggerDocument = YAML.load("./swagger.yaml");
 
 const app = express();
 
@@ -9,6 +12,9 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/v1/product", require("./routes/productRoutes"));
 app.use("/api/v1/user", require("./routes/userRoutes"));
+
+// API documentation
+app.use("/api-docs/",  swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
